@@ -63,7 +63,7 @@ public class ReportService {
         else validateDate(userId, date, today, yesterday);
 
         var patient = findPatient(userId);
-        if (!testMode && hasMinimumUsage(patient.getId()))
+        if (!testMode && !hasMinimumUsage(patient.getId()))
             throw new InsufficientDataException(ReportMessages.NOT_ENOUGH_USAGE);
 
         if (testMode) log.warn("Relatório de {} emitido em modo de teste para o usuário {}", date, userId);
@@ -95,7 +95,7 @@ public class ReportService {
     @Transactional
     public boolean generateDailyReport(Long patientId, LocalDate date) {
         if (reportRepository.existsByPatientIdAndReportTypeAndPeriodStart(patientId, ReportType.DAILY, date)) return false;
-        if (hasMinimumUsage(patientId)) return false;
+        if (!hasMinimumUsage(patientId)) return false;
         if (!measurementRepository.existsByPatientIdAndMeasuredAtGreaterThanEqualAndMeasuredAtLessThan(
                 patientId, date.atStartOfDay(), date.plusDays(1).atStartOfDay())) return false;
 
