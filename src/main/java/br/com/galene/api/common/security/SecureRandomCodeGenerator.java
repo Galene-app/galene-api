@@ -16,7 +16,6 @@ public class SecureRandomCodeGenerator implements SecureCodeGenerator {
     private static final int MIN_RANDOM_BYTES = 16;
     private static final String INVALID_DIGITS_MESSAGE = "Os digitos devem estar entre 1 e " + MAX_NUMERIC_DIGITS;
     private static final String LOW_ENTROPY_MESSAGE = "randomBytes deve ter pelo menos " + MIN_RANDOM_BYTES;
-    // Gera o padrão "%0Nd" (ex.: %06d), que completa o código com zeros à esquerda
     private static final String NUMERIC_CODE_FORMAT = "%%0%dd";
 
     private static final List<String> PASSWORD_GROUPS = List.of(

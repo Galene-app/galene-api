@@ -12,9 +12,9 @@ import java.time.LocalDate;
 public interface SubscriptionRepository extends JpaRepository<SubscriptionEntity, Long> {
 
     @Query("""
-            SELECT COUNT(s) > 0 FROM SubscriptionEntity s
+            SELECT COUNT(s) FROM SubscriptionEntity s
             WHERE s.holderUserId = :userId AND s.planType = :plan AND s.status = :status
               AND s.startDate <= :today AND (s.endDate IS NULL OR s.endDate >= :today)""")
-    boolean hasValidSubscription(@Param("userId") Long userId, @Param("plan") PlanType plan,
+    long countValidSubscriptions(@Param("userId") Long userId, @Param("plan") PlanType plan,
                                  @Param("status") SubscriptionStatus status, @Param("today") LocalDate today);
 }

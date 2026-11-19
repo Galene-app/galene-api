@@ -19,6 +19,6 @@ public class SubscriptionService {
 
     @Transactional(readOnly = true)
     public boolean isPremium(Long userId) {
-        return subscriptionRepository.hasValidSubscription(userId, PlanType.PREMIUM, SubscriptionStatus.ACTIVE, LocalDate.now(clock));
+        return subscriptionRepository.countValidSubscriptions(userId, PlanType.PREMIUM, SubscriptionStatus.ACTIVE, LocalDate.now(clock)) > 0;
     }
 }

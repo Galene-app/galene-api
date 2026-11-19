@@ -76,7 +76,6 @@ public class AuthService {
         return LoginResponseDto.codeSent(user.getMfaExpiresAt().atZone(clock.getZone()).toInstant());
     }
 
-    // O código vale uma única tentativa: certo ou errado, ele é apagado. Errou, faz login de novo.
     @Transactional(noRollbackFor = InvalidTwoFactorCodeException.class)
     public LoginResponseDto verifyTwoFactorCode(TwoFactorVerifyRequestDto request) {
         var user = userRepository.findByEmailAndAccountStatusNot(EmailHelper.normalize(request.email()), AccountStatus.INACTIVE)
@@ -104,8 +103,6 @@ public class AuthService {
         sessionService.logout(user.userId(), user.sessionId());
     }
 
-    // Senha errada, e-mail inexistente e conta inativa recebem a mesma resposta; o BCrypt roda
-    // nos três casos para que o tempo de resposta não revele se o e-mail está cadastrado
     private UserEntity validateCredentials(LoginRequestDto request) {
         var user = userRepository.findByEmailAndAccountStatusNot(EmailHelper.normalize(request.email()), AccountStatus.INACTIVE);
         var passwordMatches = passwordEncoder.matches(request.password(), user.map(UserEntity::getPasswordHash).orElse(dummyPasswordHash));

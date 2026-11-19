@@ -11,7 +11,6 @@ public record EmailMessageDto(
         String plain,
         EmailType type
 ) {
-    // O corpo carrega código/link de uso único: nunca pode aparecer em log
     @Override
     public String toString() {
         return "EmailMessageDto[type=" + type + ", to=" + EmailHelper.mask(toAddress) + "]";

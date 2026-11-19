@@ -32,7 +32,6 @@ public class PatientEntity {
     @Convert(converter = BooleanToNumberConverter.class)
     private Boolean hasMedicalCare;
 
-    // Condição declarada pelo usuário: só pode ser gravada com o consentimento HEALTH_DATA
     private String diagnosis;
 
     @Column(precision = 5, scale = 2)
