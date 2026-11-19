@@ -13,6 +13,7 @@ import br.com.galene.api.domain.questionnaire.dto.SoundProfileDto;
 import br.com.galene.api.domain.questionnaire.entity.AnswerEntity;
 import br.com.galene.api.domain.questionnaire.entity.QuestionEntity;
 import br.com.galene.api.domain.questionnaire.entity.QuestionOptionEntity;
+import br.com.galene.api.domain.questionnaire.enums.OptionCode;
 import br.com.galene.api.domain.questionnaire.exception.*;
 import br.com.galene.api.domain.questionnaire.repository.AnswerRepository;
 import br.com.galene.api.domain.questionnaire.repository.QuestionRepository;
@@ -94,12 +95,17 @@ public class QuestionnaireService {
 
     @Transactional(readOnly = true)
     public SoundProfileDto getSoundProfile(Long userId) {
+        return profileCalculator.calculate(getChosenOptions(userId));
+    }
+
+    @Transactional(readOnly = true)
+    public List<OptionCode> getChosenOptions(Long userId) {
         consentService.requireConsent(userId, TermType.DATA_USE);
         var answers = answerRepository.findByPatientId(findPatient(userId).getId());
         if (answers.isEmpty())
             throw new QuestionnaireNotAnsweredException(QuestionnaireMessages.QUESTIONNAIRE_NOT_ANSWERED);
 
-        return profileCalculator.calculate(answers.stream().map(answer -> answer.getOption().getOptionCode()).toList());
+        return answers.stream().map(answer -> answer.getOption().getOptionCode()).toList();
     }
 
     private List<QuestionOptionEntity> validateChoices(QuestionEntity question, List<Long> optionIds) {

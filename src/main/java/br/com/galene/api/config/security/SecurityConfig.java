@@ -57,7 +57,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(HttpMethod.POST, ApiPaths.AUTH_LOGOUT).authenticated()
                                 .requestMatchers(ApiPaths.AUTH_ALL).permitAll()
-                                .requestMatchers(HttpMethod.GET, ApiPaths.TERMS, ApiPaths.NOISE_LEVELS).permitAll()
+                                .requestMatchers(HttpMethod.GET, ApiPaths.TERMS, ApiPaths.NOISE_LEVELS, ApiPaths.SOUNDS).permitAll()
                                 .requestMatchers(DOCUMENTATION_PATHS).permitAll()
                                 .requestMatchers(ERROR_PATH).permitAll()
                         .anyRequest().authenticated()

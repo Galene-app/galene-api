@@ -33,6 +33,9 @@ public final class ApiPaths {
 
     public static final String USERS_ME_EXPORT = USERS_ME + "/export";
 
+    public static final String SOUNDS = V1 + "/sounds";
+    public static final String USERS_ME_SOUNDS = USERS_ME + "/sounds";
+
     public static final String USERS_ME_REPORTS = USERS_ME + "/reports";
     public static final String REPORT_DAILY = "/daily";
     public static final String REPORT_PREMIUM_PERIOD = "/{period:weekly|monthly}";
