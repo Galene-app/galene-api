@@ -22,6 +22,9 @@ public final class ErrorCodes {
     public static final String INVALID_SESSION = "INVALID_SESSION";
     public static final String INVALID_CURRENT_PASSWORD = "INVALID_CURRENT_PASSWORD";
     public static final String SAME_PASSWORD = "SAME_PASSWORD";
+    public static final String TERM_NOT_FOUND = "TERM_NOT_FOUND";
+    public static final String CONSENT_NOT_REVOCABLE = "CONSENT_NOT_REVOCABLE";
+    public static final String CONSENT_REQUIRED = "CONSENT_REQUIRED";
 
     private ErrorCodes() { }
 }

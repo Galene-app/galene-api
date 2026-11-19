@@ -5,5 +5,7 @@ public enum TermType {
     DATA_USE,
     LOCATION,
     DOCTOR,
-    HEALTH_DATA
+    HEALTH_DATA,
+    MICROPHONE,
+    BLUETOOTH
 }

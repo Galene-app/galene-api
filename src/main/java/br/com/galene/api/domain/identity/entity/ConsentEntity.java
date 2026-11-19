@@ -47,4 +47,8 @@ public class ConsentEntity {
         this.accepted = accepted;
         this.answeredAt = answeredAt;
     }
+
+    public static ConsentEntity revocationOf(ConsentEntity consent, LocalDateTime answeredAt) {
+        return new ConsentEntity(null, consent.getUser(), consent.getPatient(), consent.getTermType(), consent.getTermVersion(), false, answeredAt);
+    }
 }
