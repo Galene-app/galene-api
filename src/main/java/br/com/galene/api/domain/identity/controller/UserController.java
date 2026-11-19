@@ -5,9 +5,11 @@ import br.com.galene.api.common.model.ApiResponse;
 import br.com.galene.api.common.model.SuccessResult;
 import br.com.galene.api.config.shared.SpringDocConfig;
 import br.com.galene.api.domain.identity.constants.UserMessages;
+import br.com.galene.api.domain.identity.dto.user.ChangePasswordRequestDto;
 import br.com.galene.api.domain.identity.dto.user.UpdateUserDto;
 import br.com.galene.api.domain.identity.dto.user.UserResponseDto;
 import br.com.galene.api.domain.identity.security.UserSecurity;
+import br.com.galene.api.domain.identity.service.PasswordService;
 import br.com.galene.api.domain.identity.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final PasswordService passwordService;
 
     @Operation(summary = "Consulta o perfil do usuário autenticado")
     @GetMapping
@@ -40,6 +43,15 @@ public class UserController {
                                                                    @RequestBody @Valid UpdateUserDto request) {
         var response = userService.updateUser(user.userId(), request);
         return ResponseEntity.ok().body(new SuccessResult<>(UserMessages.USER_UPDATED, response));
+    }
+
+    @Operation(summary = "Altera a senha do usuário autenticado",
+            description = "Recebe a senha atual e a nova. As outras sessões do usuário são encerradas")
+    @PutMapping(ApiPaths.USERS_ME_PASSWORD)
+    public ResponseEntity<ApiResponse<Void>> changePassword(@AuthenticationPrincipal UserSecurity user,
+                                                            @RequestBody @Valid ChangePasswordRequestDto request) {
+        passwordService.changePassword(user, request);
+        return ResponseEntity.ok().body(new SuccessResult<>(UserMessages.PASSWORD_CHANGED, null));
     }
 
     @Operation(summary = "Exclui a conta do usuário autenticado")

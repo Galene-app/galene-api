@@ -6,6 +6,7 @@ import br.com.galene.api.common.model.SuccessResult;
 import br.com.galene.api.config.shared.SpringDocConfig;
 import br.com.galene.api.domain.identity.constants.AuthMessages;
 import br.com.galene.api.domain.identity.constants.UserMessages;
+import br.com.galene.api.domain.identity.dto.auth.ForgotPasswordRequestDto;
 import br.com.galene.api.domain.identity.dto.auth.LoginRequestDto;
 import br.com.galene.api.domain.identity.dto.auth.LoginResponseDto;
 import br.com.galene.api.domain.identity.dto.auth.RefreshTokenRequestDto;
@@ -14,6 +15,7 @@ import br.com.galene.api.domain.identity.dto.user.RegisterRequestDto;
 import br.com.galene.api.domain.identity.dto.user.UserResponseDto;
 import br.com.galene.api.domain.identity.security.UserSecurity;
 import br.com.galene.api.domain.identity.service.AuthService;
+import br.com.galene.api.domain.identity.service.PasswordService;
 import br.com.galene.api.domain.identity.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -37,6 +39,7 @@ public class AuthController {
 
     private final UserService userService;
     private final AuthService authService;
+    private final PasswordService passwordService;
 
     @Operation(summary = "Cadastra um novo usuário")
     @PostMapping(ApiPaths.AUTH_REGISTER)
@@ -68,6 +71,14 @@ public class AuthController {
     public ResponseEntity<ApiResponse<LoginResponseDto>> refresh(@RequestBody @Valid RefreshTokenRequestDto request) {
         var response = authService.refresh(request);
         return ResponseEntity.ok(new SuccessResult<>(AuthMessages.SESSION_REFRESHED, response));
+    }
+
+    @Operation(summary = "Envia uma senha temporária por e-mail",
+            description = "A senha atual deixa de valer. A resposta é a mesma exista ou não o e-mail")
+    @PostMapping(ApiPaths.AUTH_PASSWORD_FORGOT)
+    public ResponseEntity<ApiResponse<Void>> forgotPassword(@RequestBody @Valid ForgotPasswordRequestDto request) {
+        passwordService.sendTemporaryPassword(request);
+        return ResponseEntity.ok(new SuccessResult<>(AuthMessages.TEMPORARY_PASSWORD_REQUESTED, null));
     }
 
     @Operation(summary = "Encerra a sessão do token usado")

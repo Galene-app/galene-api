@@ -38,7 +38,7 @@ public class SessionService {
         var session = sessionRepository.save(new UserSessionEntity(user, HashHelper.sha256Hex(refreshToken), now));
 
         log.info("Sessão {} criada para o usuário {}", session.getId(), user.getId());
-        return LoginResponseDto.tokens(tokenService.generateToken(user.getId(), user.getProfileType(), session.getId()), refreshToken);
+        return tokens(user, session, refreshToken);
     }
 
     @Transactional
@@ -52,8 +52,7 @@ public class SessionService {
         session.setRefreshTokenHash(HashHelper.sha256Hex(newRefreshToken));
         session.setRefreshedAt(now);
 
-        var user = session.getUser();
-        return LoginResponseDto.tokens(tokenService.generateToken(user.getId(), user.getProfileType(), session.getId()), newRefreshToken);
+        return tokens(session.getUser(), session, newRefreshToken);
     }
 
     @Transactional
@@ -70,6 +69,17 @@ public class SessionService {
     public void revokeAllSessions(Long userId) {
         int revoked = sessionRepository.revokeAllActiveSessions(userId, LocalDateTime.now(clock));
         log.info("{} sessão(ões) revogada(s) do usuário {}", revoked, userId);
+    }
+
+    @Transactional
+    public void revokeOtherSessions(Long userId, Long currentSessionId) {
+        int revoked = sessionRepository.revokeOtherActiveSessions(userId, currentSessionId, LocalDateTime.now(clock));
+        log.info("{} outra(s) sessão(ões) revogada(s) do usuário {}", revoked, userId);
+    }
+
+    private LoginResponseDto tokens(UserEntity user, UserSessionEntity session, String refreshToken) {
+        var accessToken = tokenService.generateToken(user.getId(), user.getProfileType(), session.getId());
+        return LoginResponseDto.tokens(accessToken, refreshToken, Boolean.TRUE.equals(user.getPasswordChangeRequired()));
     }
 
     private boolean isActive(UserSessionEntity session, LocalDateTime now) {

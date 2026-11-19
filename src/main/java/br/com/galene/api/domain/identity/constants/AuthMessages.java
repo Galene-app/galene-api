@@ -7,6 +7,7 @@ public final class AuthMessages {
     public static final String AUTHENTICATED = "Usuário autenticado";
     public static final String SESSION_REFRESHED = "Sessão renovada";
     public static final String LOGGED_OUT = "Sessão encerrada";
+    public static final String TEMPORARY_PASSWORD_REQUESTED = "Se o e-mail estiver cadastrado, você receberá uma senha temporária";
 
     // Regras de negócio
     public static final String INVALID_CREDENTIALS = "Credenciais inválidas";

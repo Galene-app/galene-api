@@ -55,6 +55,9 @@ public class UserEntity {
     private String mfaCodeHash;
     private LocalDateTime mfaExpiresAt;
 
+    @Convert(converter = BooleanToNumberConverter.class)
+    private Boolean passwordChangeRequired;
+
     public UserEntity(RegisterRequestDto dto, String passwordHash, LocalDateTime createdAt) {
         this.fullName = dto.fullName().trim();
         this.email = EmailHelper.normalize(dto.email());
@@ -65,6 +68,7 @@ public class UserEntity {
         this.darkMode = false;
         this.colorblindMode = ColorblindMode.NONE;
         this.ttsEnabled = false;
+        this.passwordChangeRequired = false;
         this.createdAt = createdAt;
     }
 }

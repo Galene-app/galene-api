@@ -10,19 +10,20 @@ public record LoginResponseDto(
         Instant codeExpiresAt,
         String accessToken,
         String refreshToken,
-        Long expiresIn
+        Long expiresIn,
+        Boolean passwordChangeRequired
 ) {
 
     public static LoginResponseDto codeSent(Instant codeExpiresAt) {
-        return new LoginResponseDto(true, codeExpiresAt, null, null, null);
+        return new LoginResponseDto(true, codeExpiresAt, null, null, null, null);
     }
 
-    public static LoginResponseDto tokens(AccessTokenDto accessToken, String refreshToken) {
-        return new LoginResponseDto(false, null, accessToken.token(), refreshToken, accessToken.expiresIn());
+    public static LoginResponseDto tokens(AccessTokenDto accessToken, String refreshToken, boolean passwordChangeRequired) {
+        return new LoginResponseDto(false, null, accessToken.token(), refreshToken, accessToken.expiresIn(), passwordChangeRequired);
     }
 
     @Override
     public String toString() {
-        return "LoginResponseDto[mfaRequired=" + mfaRequired + "]";
+        return "LoginResponseDto[mfaRequired=" + mfaRequired + ", passwordChangeRequired=" + passwordChangeRequired + "]";
     }
 }

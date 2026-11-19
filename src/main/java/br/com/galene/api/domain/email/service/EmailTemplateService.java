@@ -16,7 +16,6 @@ import java.util.function.UnaryOperator;
 import java.util.regex.Matcher;
 
 import static br.com.galene.api.domain.email.constants.EmailPlaceholders.*;
-import static br.com.galene.api.domain.email.constants.EmailTemplates.PASSWORD_RESET_VALIDITY_LABEL;
 import static br.com.galene.api.domain.email.constants.EmailTemplates.TWO_FACTOR_VALIDITY_LABEL;
 
 @Service
@@ -32,8 +31,8 @@ public class EmailTemplateService {
     }
 
     @Transactional(readOnly = true)
-    public EmailMessageDto passwordReset(String toAddress, String toName, String resetLink) {
-        var values = Map.of(USER_NAME, toName, RESET_LINK, resetLink, VALIDITY, PASSWORD_RESET_VALIDITY_LABEL);
+    public EmailMessageDto temporaryPassword(String toAddress, String toName, String temporaryPassword) {
+        var values = Map.of(USER_NAME, toName, TEMPORARY_PASSWORD, temporaryPassword);
         return buildEmail(EmailType.PASSWORD_RESET, toAddress, toName, values);
     }
 

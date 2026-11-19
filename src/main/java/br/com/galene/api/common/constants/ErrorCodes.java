@@ -20,6 +20,8 @@ public final class ErrorCodes {
     public static final String INVALID_TWO_FACTOR_CODE = "INVALID_TWO_FACTOR_CODE";
     public static final String TWO_FACTOR_CODE_NOT_SENT = "TWO_FACTOR_CODE_NOT_SENT";
     public static final String INVALID_SESSION = "INVALID_SESSION";
+    public static final String INVALID_CURRENT_PASSWORD = "INVALID_CURRENT_PASSWORD";
+    public static final String SAME_PASSWORD = "SAME_PASSWORD";
 
     private ErrorCodes() { }
 }

@@ -13,8 +13,10 @@ public final class ApiPaths {
     public static final String AUTH_REFRESH = "/refresh";
     public static final String AUTH_LOGOUT_PATH = "/logout";
     public static final String AUTH_LOGOUT = AUTH + AUTH_LOGOUT_PATH;
+    public static final String AUTH_PASSWORD_FORGOT = "/password/forgot";
 
     public static final String USERS_ME = V1 + "/users/me";
+    public static final String USERS_ME_PASSWORD = "/password";
 
     private ApiPaths() { }
 }

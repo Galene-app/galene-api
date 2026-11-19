@@ -20,4 +20,8 @@ public interface UserSessionRepository extends JpaRepository<UserSessionEntity, 
     @Modifying
     @Query("UPDATE UserSessionEntity s SET s.revokedAt = :now WHERE s.user.id = :userId AND s.revokedAt IS NULL")
     int revokeAllActiveSessions(@Param("userId") Long userId, @Param("now") LocalDateTime now);
+
+    @Modifying
+    @Query("UPDATE UserSessionEntity s SET s.revokedAt = :now WHERE s.user.id = :userId AND s.id <> :sessionId AND s.revokedAt IS NULL")
+    int revokeOtherActiveSessions(@Param("userId") Long userId, @Param("sessionId") Long sessionId, @Param("now") LocalDateTime now);
 }
