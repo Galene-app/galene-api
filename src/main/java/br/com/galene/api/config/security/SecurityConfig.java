@@ -35,6 +35,7 @@ public class SecurityConfig {
 
     private static final String[] DOCUMENTATION_PATHS = {"/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**"};
     private static final String ERROR_PATH = "/error";
+    private static final String HEALTH_PATH = "/actuator/health";
     private static final String ALL_PATHS = "/**";
     private static final List<String> CORS_METHODS = List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS");
     private static final List<String> CORS_HEADERS = List.of(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE);
@@ -60,6 +61,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, ApiPaths.TERMS, ApiPaths.NOISE_LEVELS, ApiPaths.SOUNDS).permitAll()
                                 .requestMatchers(DOCUMENTATION_PATHS).permitAll()
                                 .requestMatchers(ERROR_PATH).permitAll()
+                                .requestMatchers(HttpMethod.GET, HEALTH_PATH).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

@@ -48,6 +48,9 @@ Em *Variables*, cadastre:
 | `SPRING_PROFILES_ACTIVE` | não | `prod` (use `dev` para liberar o `testMode` do relatório) |
 | `HAS_MFA` | não | `true` |
 
+**Healthcheck:** `GET /actuator/health` (público; `UP` com 200 ou `DOWN` com 503, incluindo a conexão com o Oracle).
+No Railway, informe esse caminho em *Settings > Healthcheck Path*; a imagem também traz o `HEALTHCHECK` do Docker.
+
 **Local:**
 
 ```bash

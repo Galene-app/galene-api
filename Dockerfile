@@ -17,9 +17,15 @@ ENV TZ=America/Sao_Paulo \
     MAILEROO_FROM_NAME=Galene \
     JAVA_OPTS="-XX:MaxRAMPercentage=75"
 
-RUN groupadd --system galene && useradd --system --gid galene --no-create-home galene
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/* \
+    && groupadd --system galene \
+    && useradd --system --gid galene --no-create-home galene
 COPY --from=build /app/target/*.jar /app/app.jar
 USER galene
 
 EXPOSE 7057
+HEALTHCHECK --interval=30s --timeout=5s --start-period=90s --retries=3 \
+    CMD curl -fsS "http://localhost:${PORT:-7057}/actuator/health" || exit 1
 ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar /app/app.jar"]
