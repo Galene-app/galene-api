@@ -1,9 +1,5 @@
 package br.com.galene.api.common.constants;
 
-/**
- * Mensagens genéricas de erro devolvidas ao cliente. Não podem conter linguagem de tratamento
- * ou diagnóstico (Anvisa RDC 657/2022).
- */
 public final class ErrorMessages {
 
     public static final String VALIDATION_ERROR = "Dados inválidos ou insuficientes";

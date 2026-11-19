@@ -52,6 +52,9 @@ public class UserEntity {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
+    private String mfaCodeHash;
+    private LocalDateTime mfaExpiresAt;
+
     public UserEntity(RegisterRequestDto dto, String passwordHash, LocalDateTime createdAt) {
         this.fullName = dto.fullName().trim();
         this.email = EmailHelper.normalize(dto.email());

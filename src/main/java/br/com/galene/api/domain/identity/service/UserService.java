@@ -46,6 +46,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final SecureCodeGenerator secureCodeGenerator;
     private final List<RegisterValidate> registerValidators;
+    private final SessionService sessionService;
     private final Clock clock;
 
     @Transactional
@@ -93,6 +94,7 @@ public class UserService {
         var patient = findPatient(userId);
         if (patient != null) patient.setDiagnosis(null);
 
+        sessionService.revokeAllSessions(userId);
         log.info("Usuário {} excluído (dados anonimizados)", userId);
     }
 

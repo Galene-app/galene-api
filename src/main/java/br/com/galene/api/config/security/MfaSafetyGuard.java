@@ -7,10 +7,6 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.Set;
 
-/**
- * Impede que a aplicação suba com o 2FA desligado fora dos profiles dev/test.
- * Sem profile (o que inclui um deploy em que esqueceram de configurar) a aplicação não sobe.
- */
 @Log4j2
 @Component
 public class MfaSafetyGuard {

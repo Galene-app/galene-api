@@ -11,7 +11,7 @@ import java.net.http.HttpClient;
 @Configuration
 public class MailerooClientConfig {
 
-    public static final String API_KEY_HEADER = "X-Api-Key";
+    public static final String API_KEY_HEADER = "Authorization";
 
     @Bean
     public RestClient mailerooRestClient(MailerooConfig config) {
@@ -30,6 +30,7 @@ public class MailerooClientConfig {
         return RestClient.builder()
                 .baseUrl(config.getBaseUrl())
                 .requestFactory(factory)
-                .defaultHeader(API_KEY_HEADER, config.getApiKey());
+                .defaultHeader(API_KEY_HEADER, "Bearer " + config.getApiKey())
+                .defaultHeader("Content-Type", "application/json");
     }
 }

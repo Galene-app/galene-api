@@ -17,10 +17,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-/**
- * Lê o {@code Authorization: Bearer} e autentica a requisição a partir das claims do JWT (stateless).
- * Token ausente ou inválido não interrompe a cadeia: as rotas protegidas respondem 401.
- */
 @Log4j2
 @Component
 @RequiredArgsConstructor

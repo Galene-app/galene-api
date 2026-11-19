@@ -6,10 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import java.time.Clock;
 import java.time.ZoneId;
 
-/**
- * Relógio único da aplicação (horário de Brasília). Os services recebem o {@link Clock}
- * por injeção, o que permite fixar a data e a hora nos testes.
- */
 @Configuration
 public class ClockConfig {
 

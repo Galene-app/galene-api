@@ -3,10 +3,7 @@ package br.com.galene.api.common.exception.custom;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-/**
- * Base das exceções de regra de negócio. Cada exceção de domínio fixa o status HTTP e o código
- * devolvidos no formato de erro {@code { code, message, details }}.
- */
+
 @Getter
 public abstract class ApiException extends RuntimeException {
 

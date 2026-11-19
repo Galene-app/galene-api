@@ -16,10 +16,6 @@ import tools.jackson.databind.json.JsonMapper;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-/**
- * Responde os 401/403 gerados pela cadeia de segurança (antes de chegar no controller)
- * no mesmo formato de erro do {@code GlobalExceptionHandler}.
- */
 public class SecurityExceptionHandler implements AuthenticationEntryPoint, AccessDeniedHandler {
 
     private final JsonMapper jsonMapper;

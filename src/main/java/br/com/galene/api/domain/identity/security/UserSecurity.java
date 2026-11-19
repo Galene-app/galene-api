@@ -6,11 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.List;
 
-/**
- * Usuário autenticado, montado a partir das claims do JWT (sem consulta ao banco).
- * Os controllers o recebem com {@code @AuthenticationPrincipal}.
- */
-public record UserSecurity(Long userId, ProfileType role) {
+public record UserSecurity(Long userId, ProfileType role, Long sessionId) {
 
     public static final String ROLE_PREFIX = "ROLE_";
 

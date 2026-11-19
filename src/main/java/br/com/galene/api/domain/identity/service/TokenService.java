@@ -19,6 +19,7 @@ public class TokenService {
 
     public static final String ISSUER = "galene-api";
     public static final String ROLE_CLAIM = "role";
+    public static final String SESSION_CLAIM = "sid";
     private static final String INVALID_CLAIMS_MESSAGE = "Token claims não identifica um usuário válido";
 
     private final SecurityProperties properties;
@@ -32,17 +33,19 @@ public class TokenService {
         this.algorithm = Algorithm.HMAC256(properties.getTokenSecret().getBytes(StandardCharsets.UTF_8));
         var verification = (JWTVerifier.BaseVerification) JWT.require(algorithm)
                 .withIssuer(ISSUER)
-                .withClaimPresence(ROLE_CLAIM);
+                .withClaimPresence(ROLE_CLAIM)
+                .withClaimPresence(SESSION_CLAIM);
         this.verifier = verification.build(clock);
     }
 
-    public AccessTokenDto generateToken(Long userId, ProfileType role) {
+    public AccessTokenDto generateToken(Long userId, ProfileType role, Long sessionId) {
         Instant issuedAt = clock.instant();
         Instant expiresAt = issuedAt.plus(properties.getAccessTokenTtl());
         String token = JWT.create()
                 .withIssuer(ISSUER)
                 .withSubject(String.valueOf(userId))
                 .withClaim(ROLE_CLAIM, role.name())
+                .withClaim(SESSION_CLAIM, sessionId)
                 .withIssuedAt(issuedAt)
                 .withExpiresAt(expiresAt)
                 .sign(algorithm);
@@ -53,10 +56,11 @@ public class TokenService {
         var decoded = verifier.verify(tokenJwt);
         String subject = decoded.getSubject();
         String role = decoded.getClaim(ROLE_CLAIM).asString();
-        if (subject == null || role == null) throw invalidClaims(null);
+        Long sessionId = decoded.getClaim(SESSION_CLAIM).asLong();
+        if (subject == null || role == null || sessionId == null) throw invalidClaims(null);
 
         try {
-            return new UserSecurity(Long.valueOf(subject), ProfileType.valueOf(role));
+            return new UserSecurity(Long.valueOf(subject), ProfileType.valueOf(role), sessionId);
         } catch (IllegalArgumentException ex) {
             throw invalidClaims(ex);
         }

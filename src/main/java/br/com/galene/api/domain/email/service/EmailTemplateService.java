@@ -50,7 +50,6 @@ public class EmailTemplateService {
         return new EmailMessageDto(toAddress, toName, template.getSubject(), html, plain, type);
     }
 
-    // Passada única: o valor inserido nunca é relido, então um nome como "{{code}}" não é tratado como campo
     private static String fill(String body, Map<String, String> values, UnaryOperator<String> escape) {
         var matcher = ANY_PLACEHOLDER.matcher(body);
         var filledBody = new StringBuilder();
