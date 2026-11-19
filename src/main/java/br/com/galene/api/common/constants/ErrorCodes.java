@@ -33,5 +33,9 @@ public final class ErrorCodes {
     public static final String INVALID_CHOICE_COUNT = "INVALID_CHOICE_COUNT";
     public static final String QUESTIONNAIRE_NOT_ANSWERED = "QUESTIONNAIRE_NOT_ANSWERED";
 
+    public static final String INVALID_NOISE_READINGS = "INVALID_NOISE_READINGS";
+    public static final String TOO_MANY_READINGS = "TOO_MANY_READINGS";
+    public static final String INVALID_PERIOD = "INVALID_PERIOD";
+
     private ErrorCodes() { }
 }

@@ -25,6 +25,9 @@ public final class ApiPaths {
 
     public static final String QUESTIONNAIRE = V1 + "/questionnaire";
 
+    public static final String USERS_ME_NOISE_READINGS = USERS_ME + "/noise-readings";
+    public static final String NOISE_LEVELS = V1 + "/noise-levels";
+
     public static final String TERMS = V1 + "/terms";
 
     private ApiPaths() { }

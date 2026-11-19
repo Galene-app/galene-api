@@ -1,5 +1,6 @@
 package br.com.galene.api.domain.questionnaire.service;
 
+import br.com.galene.api.domain.identity.dto.event.AccountDeletedEvent;
 import br.com.galene.api.domain.identity.dto.event.ConsentRevokedEvent;
 import br.com.galene.api.domain.questionnaire.repository.AnswerRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,5 +21,13 @@ public class QuestionnaireListenerService {
 
         int deleted = answerRepository.deleteRequiringConsent(event.patientId(), event.termType());
         if (deleted > 0) log.info("{} resposta(s) apagada(s) após o usuário {} revogar {}", deleted, event.userId(), event.termType());
+    }
+
+    @EventListener
+    public void onAccountDeleted(AccountDeletedEvent event) {
+        if (event.patientId() == null) return;
+
+        int deleted = answerRepository.deleteAllOfPatient(event.patientId());
+        log.info("{} resposta(s) apagada(s) na exclusão da conta {}", deleted, event.userId());
     }
 }

@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ApiException.class)
     public ResponseEntity<ErrorResponse> handleApiException(ApiException ex) {
-        var serverResponse = ErrorResponse.of(ex.getCode(), ex.getMessage());
+        var serverResponse = new ErrorResponse(ex.getCode(), ex.getMessage(), ex.getDetails());
         return ResponseEntity.status(ex.getStatus()).body(serverResponse);
     }
 

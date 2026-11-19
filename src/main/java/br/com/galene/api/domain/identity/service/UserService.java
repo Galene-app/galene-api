@@ -2,6 +2,7 @@ package br.com.galene.api.domain.identity.service;
 
 import br.com.galene.api.common.security.SecureCodeGenerator;
 import br.com.galene.api.domain.identity.constants.UserMessages;
+import br.com.galene.api.domain.identity.dto.event.AccountDeletedEvent;
 import br.com.galene.api.domain.identity.dto.user.RegisterRequestDto;
 import br.com.galene.api.domain.identity.dto.user.UpdateUserDto;
 import br.com.galene.api.domain.identity.dto.user.UserResponseDto;
@@ -19,6 +20,7 @@ import br.com.galene.api.domain.identity.repository.UserRepository;
 import br.com.galene.api.domain.identity.validation.register.RegisterValidate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +49,7 @@ public class UserService {
     private final SecureCodeGenerator secureCodeGenerator;
     private final List<RegisterValidate> registerValidators;
     private final SessionService sessionService;
+    private final ApplicationEventPublisher eventPublisher;
     private final Clock clock;
 
     @Transactional
@@ -95,6 +98,7 @@ public class UserService {
         if (patient != null) patient.setDiagnosis(null);
 
         sessionService.revokeAllSessions(userId);
+        eventPublisher.publishEvent(new AccountDeletedEvent(userId, patient == null ? null : patient.getId()));
         log.info("Usuário {} excluído (dados anonimizados)", userId);
     }
 
