@@ -25,6 +25,7 @@ public final class ErrorCodes {
     public static final String TERM_NOT_FOUND = "TERM_NOT_FOUND";
     public static final String CONSENT_NOT_REVOCABLE = "CONSENT_NOT_REVOCABLE";
     public static final String CONSENT_REQUIRED = "CONSENT_REQUIRED";
+    public static final String MICROPHONE_REQUIRED = "MICROPHONE_REQUIRED";
 
     private ErrorCodes() { }
 }
