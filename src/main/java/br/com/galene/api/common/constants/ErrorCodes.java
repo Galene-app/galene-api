@@ -37,5 +37,7 @@ public final class ErrorCodes {
     public static final String TOO_MANY_READINGS = "TOO_MANY_READINGS";
     public static final String INVALID_PERIOD = "INVALID_PERIOD";
 
+    public static final String NOTIFICATION_NOT_FOUND = "NOTIFICATION_NOT_FOUND";
+
     private ErrorCodes() { }
 }
