@@ -39,5 +39,10 @@ public final class ErrorCodes {
 
     public static final String NOTIFICATION_NOT_FOUND = "NOTIFICATION_NOT_FOUND";
 
+    public static final String PREMIUM_REQUIRED = "PREMIUM_REQUIRED";
+    public static final String INSUFFICIENT_DATA = "INSUFFICIENT_DATA";
+    public static final String INVALID_REPORT_DATE = "INVALID_REPORT_DATE";
+    public static final String TEST_MODE_DISABLED = "TEST_MODE_DISABLED";
+
     private ErrorCodes() { }
 }
