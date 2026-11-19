@@ -98,11 +98,14 @@ public class ConsentService {
             throw new ConsentRequiredException(ConsentMessages.CONSENT_REQUIRED.formatted(termType));
     }
 
-    private Map<TermType, ConsentEntity> latestAnswers(Long userId) {
+    public static Map<TermType, ConsentEntity> latestPerTerm(List<ConsentEntity> newestFirst) {
         var latest = new EnumMap<TermType, ConsentEntity>(TermType.class);
-        consentRepository.findByUserIdOrderByAnsweredAtDescIdDesc(userId)
-                .forEach(consent -> latest.putIfAbsent(consent.getTermType(), consent));
+        newestFirst.forEach(consent -> latest.putIfAbsent(consent.getTermType(), consent));
         return latest;
+    }
+
+    private Map<TermType, ConsentEntity> latestAnswers(Long userId) {
+        return latestPerTerm(consentRepository.findByUserIdOrderByAnsweredAtDescIdDesc(userId));
     }
 
     private static List<ConsentResponseDto> toResponse(Map<TermType, ConsentEntity> latest) {

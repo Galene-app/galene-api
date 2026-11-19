@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface NotificationRepository extends JpaRepository<NotificationEntity, Long> {
@@ -17,6 +18,8 @@ public interface NotificationRepository extends JpaRepository<NotificationEntity
     Page<NotificationEntity> findByUserIdAndIsRead(Long userId, Boolean isRead, Pageable pageable);
 
     Optional<NotificationEntity> findByIdAndUserId(Long id, Long userId);
+
+    List<NotificationEntity> findByUserIdOrderByCreatedAtAscIdAsc(Long userId);
 
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("UPDATE NotificationEntity n SET n.isRead = :read WHERE n.userId = :userId AND n.isRead <> :read")

@@ -18,5 +18,8 @@ public interface MeasurementRepository extends JpaRepository<MeasurementEntity, 
                                               @Param("to") LocalDateTime to);
 
     @EntityGraph(attributePaths = "level")
+    List<MeasurementEntity> findByPatientIdOrderByMeasuredAtAsc(Long patientId);
+
+    @EntityGraph(attributePaths = "level")
     Page<MeasurementEntity> findByPatientIdAndMeasuredAtBetween(Long patientId, LocalDateTime from, LocalDateTime to, Pageable pageable);
 }
