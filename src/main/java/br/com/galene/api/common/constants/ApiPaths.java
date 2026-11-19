@@ -20,6 +20,10 @@ public final class ApiPaths {
     public static final String USERS_ME_CONSENTS = USERS_ME + "/consents";
     public static final String CONSENT_TERM_TYPE = "/{termType}";
     public static final String USERS_ME_PERMISSIONS = USERS_ME + "/permissions";
+    public static final String USERS_ME_QUESTIONNAIRE = USERS_ME + "/questionnaire";
+    public static final String USERS_ME_PROFILE_SOUND = USERS_ME + "/profile-sound";
+
+    public static final String QUESTIONNAIRE = V1 + "/questionnaire";
 
     public static final String TERMS = V1 + "/terms";
 

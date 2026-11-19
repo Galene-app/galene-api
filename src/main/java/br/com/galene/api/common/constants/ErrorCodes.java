@@ -27,5 +27,11 @@ public final class ErrorCodes {
     public static final String CONSENT_REQUIRED = "CONSENT_REQUIRED";
     public static final String MICROPHONE_REQUIRED = "MICROPHONE_REQUIRED";
 
+    public static final String QUESTION_NOT_FOUND = "QUESTION_NOT_FOUND";
+    public static final String OPTION_NOT_IN_QUESTION = "OPTION_NOT_IN_QUESTION";
+    public static final String QUESTION_NOT_ANSWERED = "QUESTION_NOT_ANSWERED";
+    public static final String INVALID_CHOICE_COUNT = "INVALID_CHOICE_COUNT";
+    public static final String QUESTIONNAIRE_NOT_ANSWERED = "QUESTIONNAIRE_NOT_ANSWERED";
+
     private ErrorCodes() { }
 }

@@ -4,6 +4,7 @@ import br.com.galene.api.domain.identity.constants.ConsentMessages;
 import br.com.galene.api.domain.identity.dto.consent.ConsentRequestDto;
 import br.com.galene.api.domain.identity.dto.consent.ConsentResponseDto;
 import br.com.galene.api.domain.identity.dto.consent.TermResponseDto;
+import br.com.galene.api.domain.identity.dto.event.ConsentRevokedEvent;
 import br.com.galene.api.domain.identity.entity.ConsentEntity;
 import br.com.galene.api.domain.identity.entity.PatientEntity;
 import br.com.galene.api.domain.identity.entity.TermEntity;
@@ -16,6 +17,7 @@ import br.com.galene.api.domain.identity.repository.PatientRepository;
 import br.com.galene.api.domain.identity.repository.TermRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +36,7 @@ public class ConsentService {
     private final TermRepository termRepository;
     private final PatientRepository patientRepository;
     private final UserService userService;
+    private final ApplicationEventPublisher eventPublisher;
     private final Clock clock;
 
     @Transactional(readOnly = true)
@@ -74,18 +77,24 @@ public class ConsentService {
         var lastAnswer = consentRepository.findFirstByUserIdAndTermTypeOrderByAnsweredAtDescIdDesc(userId, termType);
         if (lastAnswer.isEmpty() || !lastAnswer.get().getAccepted()) return;
 
-        consentRepository.save(ConsentEntity.revocationOf(lastAnswer.get(), LocalDateTime.now(clock)));
+        var revocation = consentRepository.save(ConsentEntity.revocationOf(lastAnswer.get(), LocalDateTime.now(clock)));
         if (termType == TermType.HEALTH_DATA) findPatient(userId).setDiagnosis(null);
 
+        var patientId = revocation.getPatient() == null ? null : revocation.getPatient().getId();
+        eventPublisher.publishEvent(new ConsentRevokedEvent(userId, patientId, termType));
         log.info("Usuário {} revogou o termo {}", userId, termType);
     }
 
     @Transactional(readOnly = true)
-    public void requireConsent(Long userId, TermType termType) {
-        var accepted = consentRepository.findFirstByUserIdAndTermTypeOrderByAnsweredAtDescIdDesc(userId, termType)
+    public boolean hasConsent(Long userId, TermType termType) {
+        return consentRepository.findFirstByUserIdAndTermTypeOrderByAnsweredAtDescIdDesc(userId, termType)
                 .map(ConsentEntity::getAccepted)
                 .orElse(false);
-        if (!accepted)
+    }
+
+    @Transactional(readOnly = true)
+    public void requireConsent(Long userId, TermType termType) {
+        if (!hasConsent(userId, termType))
             throw new ConsentRequiredException(ConsentMessages.CONSENT_REQUIRED.formatted(termType));
     }
 
